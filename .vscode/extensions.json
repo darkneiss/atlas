@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "charliermarsh.ruff",
+    "ms-python.vscode-pylance",
+    "ms-python.black-formatter",
+    "redhat.vscode-yaml",
+    "EditorConfig.EditorConfig"
+  ]
+}
