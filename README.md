@@ -29,3 +29,11 @@ Key areas:
 - `rules/`: engineering and AI assistant operating rules
 - `context/`: project state, backlog, and hardware context
 - `infrastructure/`, `tools/`, `experiments/`, `tests/`: platform support and validation areas
+
+## Documentation entry points
+
+- `docs/AI_CONTEXT.md`: current project context and phase focus
+- `docs/architecture/ARCHITECTURE_MAP.md`: architecture map and implemented slices
+- `docs/specs/phase-01/conversational-head.md`: active phase-1 functional specification
+- `docs/adr/README.md`: architecture decision records index
+- `context/current-sprint.md`: current iteration priorities
