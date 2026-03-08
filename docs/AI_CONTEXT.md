@@ -14,7 +14,12 @@ Enable progressive integration with ROS2, hardware controllers, and sensor pipel
 
 ## Current development phase
 
-Initialization phase: repository scaffolding, architecture guardrails, and documentation baselines.
+Repository and architecture foundation are complete. Current work is an early phase-1 interaction slice:
+
+- operational state model
+- head expression mapping
+- conversation turn model
+- green unit tests for these domain elements
 
 ## Hardware
 
