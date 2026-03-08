@@ -130,6 +130,15 @@ For any production behavior:
 - Domain tests must not depend on infrastructure.
 - Adapter behavior must be verified with integration and/or contract tests.
 
+### Test and production file separation
+
+When asked to implement production code:
+
+- modify only production files unless test changes are explicitly requested
+- never place production classes, functions, or implementation logic inside test files
+- never duplicate production code inside tests
+- preserve existing tests unless the task explicitly asks to revise them
+
 ### Test levels
 
 Use the appropriate level:
