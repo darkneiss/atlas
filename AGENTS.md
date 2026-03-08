@@ -1,3 +1,4 @@
+
 # AGENTS.md
 
 ## Purpose
@@ -12,28 +13,32 @@ Atlas combines:
 - modular hardware and software
 - a phased architecture that starts with a conversational head and a Raspberry Pi core
 
-This file defines the **non-negotiable engineering rules** for any AI coding assistant working in this repository.
+This file defines the **operational guidelines** for AI coding assistants working in this repository.
+`CODEX.md` contains the strict architectural rules.
+`AGENTS.md` summarizes the most important constraints and working patterns.
+`docs/AI_CONTEXT.md` defines the current project context and phase focus and should be reviewed before implementing changes.
 
 ---
 
-## Source of truth and decision priority
+# Source of truth and decision priority
 
 When making decisions, use this priority order:
 
 1. direct user instructions
 2. accepted ADRs in `docs/adr/`
 3. feature specs in `docs/specs/`
-4. existing tests
-5. architecture documentation in `docs/architecture/`
-6. repository rules in `CODEX.md` and `rules/`
-7. local code style and surrounding code
-8. assistant judgment
+4. project context in `docs/AI_CONTEXT.md`
+5. existing tests
+6. architecture documentation in `docs/architecture/`
+7. repository rules in `CODEX.md` and `rules/`
+8. local code style and surrounding code
+9. assistant judgment
 
 If a higher-priority source conflicts with a lower-priority source, follow the higher-priority source.
 
 ---
 
-## Architecture principles
+# Architecture overview
 
 Atlas follows these architectural principles:
 
@@ -44,183 +49,214 @@ Atlas follows these architectural principles:
 
 Assistants must preserve these principles.
 
-### Mandatory rules
+Key rule:
 
-- Keep **domain**, **application**, and **infrastructure/adapters** clearly separated.
-- Do not place framework-specific code inside `domain/`.
-- Do not bypass ports/adapters to access infrastructure directly from domain or application code.
-- Do not collapse architectural boundaries for convenience.
-- Prefer small, explicit, local changes over broad refactors.
+Production code must respect **clear architectural layers**.
 
----
 
-## Domain protection rules
+atlas_core/contexts/<context>/
+    domain/
+    application/
+    ports/
+    adapters/
 
-The domain model is protected and must not be changed casually.
-
-### Do not invent domain behavior
-
-Do **not** introduce any of the following unless they are explicitly defined by the user, specs, ADRs, or tests:
-
-- new states
-- new transitions
-- new invariants
-- new domain properties
-- new domain methods
-- new workflows
-- new side effects
-
-If something is missing, do not silently invent it.
-
-### Preserve agreed APIs
-
-If the requested API is explicit, preserve it exactly.
-
-Examples of forbidden changes unless explicitly requested:
-
-- replacing a factory method with a constructor
-- replacing a mutable API with an immutable one
-- replacing an immutable API with a mutable one
-- renaming domain concepts
-- moving logic across bounded contexts without reason
 
 ---
 
-## DDD-lite rules
+# Layer responsibilities
 
-Atlas uses **pragmatic DDD**, not ceremony-heavy DDD.
+### domain
 
-### Required
+Contains:
 
-- use bounded contexts
-- use ubiquitous language from docs/specs/ADR
-- model behavior in the domain where appropriate
-- keep names aligned with the domain language
-- keep aggregates/entities/value objects simple and explicit
+- entities
+- value objects
+- enums
+- invariants
+- domain exceptions
+- domain behavior
 
-### Avoid
+Domain code must **not depend on**:
 
-- unnecessary abstraction
-- speculative patterns
-- event sourcing unless explicitly decided
-- CQRS unless explicitly decided
-- artificial domain services without a real need
-- over-modeling for future possibilities
+- frameworks
+- databases
+- infrastructure
+- adapters
 
 ---
 
-## TDD rules
+### application
 
-Atlas is built with **strict TDD** for production code.
+Contains:
 
-### Required workflow
+- use cases
+- orchestration of domain logic
+- coordination of ports
 
-For any production behavior:
+Application code may depend on:
 
-1. write or refine the spec if needed
+- domain
+- ports
+
+Application code must **not depend on infrastructure implementations**.
+
+---
+
+### ports
+
+Ports define **interfaces for external systems**.
+
+Examples:
+
+- repositories
+- state stores
+- external gateways
+
+Ports contain **contracts only**, no logic.
+
+---
+
+### adapters
+
+Adapters implement ports.
+
+Examples:
+
+- in-memory implementations
+- persistence adapters
+- external service integrations
+
+Adapters depend on ports, **never the other way around**.
+
+---
+
+# Python project layout
+
+Atlas uses the **src layout**.
+
+All importable Python code must live under:
+
+
+apps/atlas-core/src/atlas_core/
+
+
+Example structure:
+
+
+apps/
+  atlas-core/
+    src/
+      atlas_core/
+        contexts/
+
+
+Do not place production code at the repository root.
+
+Tests must import code through the package path, not via relative imports.
+
+---
+
+# Naming rules
+
+There is a difference between **distribution names** and **Python package names**.
+
+Distribution names may use hyphens:
+
+
+atlas-core
+atlas-head-android
+
+
+Python packages must use underscores:
+
+
+atlas_core
+
+
+Never create Python modules containing hyphens.
+
+---
+
+# TDD workflow
+
+Atlas uses **strict Test Driven Development**.
+
+Standard workflow:
+
+1. write or refine the specification
 2. write a failing test
-3. implement the minimum production code required to pass
+3. implement the minimal code required
 4. refactor without changing behavior
 
-### Mandatory test rules
+Rules:
 
-- Do not write production code before failing tests exist.
-- Bugs should first be reproduced with a failing test.
-- Tests must validate one behavior/rule at a time, except for simple parametrized mappings.
-- Domain tests must not depend on infrastructure.
-- Adapter behavior must be verified with integration and/or contract tests.
-
-### Test levels
-
-Use the appropriate level:
-
-- **unit tests** for domain and application logic
-- **contract tests** for ports and message schemas
-- **integration tests** for adapters and persistence
-- **end-to-end tests** for system flows
-
-### Allowed exception
-
-Spikes and experiments may exist in `experiments/`, but they must not be treated as production-ready code.
+- never write production code before tests
+- reproduce bugs with tests first
+- keep tests small and explicit
+- keep domain tests independent from infrastructure
 
 ---
 
-## Scope control rules
+# Test levels
 
-Atlas is developed in phases.
+Use the correct testing level:
 
-For **phase 1**, the scope is the conversational head and core interaction flow.
+- **unit tests** → domain and application logic
+- **contract tests** → ports and message schemas
+- **integration tests** → adapters and persistence
+- **end-to-end tests** → full system flows
 
-Do not silently broaden scope.
+---
 
-### Out of scope unless explicitly requested
+# Scope control
+
+Atlas is built in phases.
+
+Current phase: **Phase 1 — Conversational Head**
+
+Scope includes:
+
+- interaction state machine
+- conversational turns
+- memory interfaces
+- head expressions
+- core orchestration logic
+
+Out of scope unless explicitly requested:
 
 - mobility
 - navigation
 - ROS2 integration
-- hardware motor control
-- autonomous tool execution
-- scheduled autonomy
-- advanced multimodal perception
-- distributed multi-node runtime as a required feature
+- motor control
+- advanced perception
+- distributed runtime
 
-If a requested change touches future scope, keep the implementation minimal and phase-appropriate.
+If something touches future scope, implement **minimal phase‑appropriate behavior only**.
 
 ---
 
-## Test design rules
+# Change discipline
 
-### Preferred organization
+Assistants must:
 
-- one test file per concept/module/responsibility
-- multiple focused tests inside that file
+- make the smallest valid change
+- avoid unrelated refactors
+- avoid premature infrastructure
+- avoid introducing heavy dependencies
+- preserve existing architecture
 
-### Avoid
+If a requested change would modify architecture or domain boundaries:
 
-- one file per single tiny test
-- giant tests that validate many unrelated behaviors
-- hidden setup that obscures intent
-
-### Style
-
-- keep tests small and explicit
-- use clear arrange / act / assert structure
-- prefer readability over cleverness
-- use parametrization for mapping tables and equivalence sets
+- align with ADRs
+- do not silently change conventions
 
 ---
 
-## Change discipline
-
-### Smallest valid change
-
-Assistants should make the smallest valid change that satisfies the request.
-
-### Do not overreach
-
-Do not:
-
-- refactor unrelated code
-- rename things without need
-- add dependencies without clear justification
-- introduce infrastructure early
-- optimize prematurely
-
-### If architecture would change
-
-If a change would alter architecture, domain boundaries, or repository conventions:
-
-- do not silently apply it
-- align with existing ADRs/specs
-- if needed, propose or require a new ADR/spec update first
-
----
-
-## Documentation obligations
+# Documentation alignment
 
 When changing behavior, keep documentation aligned.
 
-Update the relevant files when necessary:
+Update when necessary:
 
 - `docs/specs/`
 - `docs/architecture/`
@@ -229,36 +265,17 @@ Update the relevant files when necessary:
 - `TESTING.md`
 - `CODEX.md`
 
-Do not leave architecture-relevant changes undocumented.
-
 ---
 
-## Forbidden moves
+# Expected assistant behavior
 
-The following are forbidden unless explicitly requested:
-
-- inventing domain states or transitions
-- adding unapproved behavior
-- bypassing ports/adapters
-- placing infrastructure code in domain
-- writing production code before tests
-- silently broadening phase scope
-- replacing requested APIs with “better” alternatives
-- introducing heavy dependencies for small problems
-- turning the modular monolith into microservices prematurely
-
----
-
-## Expected assistant behavior
-
-When modifying this repository, assistants should:
+Assistants should:
 
 - respect the current phase
 - preserve architectural boundaries
 - work from specs and tests
-- prefer explicitness over magic
+- avoid inventing domain behavior
 - keep code easy to review
-- keep the domain model coherent
-- avoid hidden design decisions
+- prefer explicitness over magic
 
-If information is missing, prefer **preserving constraints** over improvising behavior.
+If information is missing, **preserve constraints rather than improvising behavior**.

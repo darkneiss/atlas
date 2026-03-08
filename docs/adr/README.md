@@ -23,3 +23,4 @@ ADRs capture significant architectural decisions so the team can understand:
 - `0003-ddd-lite.md`
 - `0004-test-driven-development.md`
 - `0005-modular-monolith-phase-1.md`
+- `0006-phase-1-conversational-head-scope.md`

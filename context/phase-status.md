@@ -1,18 +1,28 @@
 # Current Status
 
-Atlas has completed repository and architecture foundation setup and is now in early phase-1 implementation.
+Atlas has completed repository and architecture foundation setup and is in active phase-1 implementation.
 
 The interaction domain currently includes:
 
 - operational state model
 - head expression mapping
 - conversation turn model
+- interaction session model
 
-Unit tests exist and are green for these domain elements.
+Application and boundary progress:
+
+- `StoreConversationTurn` application use case
+- `ConversationRepositoryPort` contract
+- `OperationalStateStorePort` contract
+
+Testing progress:
+
+- unit tests are green for implemented domain/application elements
+- contract tests are green for implemented interaction ports
+- first integration slice is green (`StoreConversationTurn` + in-memory repository in test scope)
 
 Next focus areas:
 
-- interaction session
-- conversation persistence port
-- first interaction use case
-- integration slice with in-memory adapters
+- operational state application slice using `OperationalStateStorePort`
+- memory persistence boundary contract
+- incremental expansion of conversational flow toward AC-005 to AC-008

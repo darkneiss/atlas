@@ -52,7 +52,9 @@ This specification does not cover:
 
 ## Main Interaction Flow
 
-1. Atlas starts in `IDLE`
+Before this flow, Atlas bootstraps from `BOOTING` to `IDLE`.
+
+1. Atlas starts interaction in `IDLE`
 2. The user provides an input to Atlas
 3. Atlas transitions to `LISTENING`
 4. Atlas captures or receives the user utterance
