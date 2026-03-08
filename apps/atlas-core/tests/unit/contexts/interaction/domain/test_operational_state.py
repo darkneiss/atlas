@@ -14,6 +14,11 @@ def test_initial_state_is_booting() -> None:
     assert machine.current_state is RobotOperationalState.BOOTING
 
 
+def test_state_machine_cannot_be_created_directly_with_non_booting_state() -> None:
+    with pytest.raises(ValueError):
+        OperationalStateMachine(RobotOperationalState.IDLE)
+
+
 def test_can_transition_from_booting_to_idle() -> None:
     machine = OperationalStateMachine.initial()
 
