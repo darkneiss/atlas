@@ -16,6 +16,9 @@
 - First integration slice implemented for storing conversation turns.
 - `TransitionOperationalState` application use case implemented.
 - Integration slice implemented for operational-state transitions.
+- `HeadExpressionOutputPort` contract and tests implemented.
+- `PublishHeadExpression` application use case implemented.
+- Integration slice implemented for head-expression output.
 - Unit, contract, and current integration tests are green for implemented slices.
 
 ### In Progress / Next

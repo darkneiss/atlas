@@ -13,8 +13,10 @@ Application and boundary progress:
 
 - `StoreConversationTurn` application use case
 - `TransitionOperationalState` application use case
+- `PublishHeadExpression` application use case
 - `ConversationRepositoryPort` contract
 - `OperationalStateStorePort` contract
+- `HeadExpressionOutputPort` contract
 
 Testing progress:
 
@@ -23,6 +25,7 @@ Testing progress:
 - integration slices are green:
   - `StoreConversationTurn` + in-memory repository in test scope
   - `TransitionOperationalState` + in-memory state store in test scope
+  - `PublishHeadExpression` + in-memory output port in test scope
 
 Next focus areas:
 

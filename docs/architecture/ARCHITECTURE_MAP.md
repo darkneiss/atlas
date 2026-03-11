@@ -54,23 +54,26 @@ apps/atlas-core/src/atlas_core/contexts/interaction/
 
 - `store_conversation_turn.py` (`StoreConversationTurn`)
 - `transition_operational_state.py` (`TransitionOperationalState`)
+- `publish_head_expression.py` (`PublishHeadExpression`)
 
 ### Ports (contracts)
 
 - `conversation_repository.py` (`ConversationRepositoryPort`)
 - `operational_state_store.py` (`OperationalStateStorePort`)
+- `head_expression_output.py` (`HeadExpressionOutputPort`)
 
 ## Test map (implemented)
 
 ### Unit tests
 
 - domain: operational state, expression mapping, conversation turn, interaction session
-- application: `StoreConversationTurn`, `TransitionOperationalState`
+- application: `StoreConversationTurn`, `TransitionOperationalState`, `PublishHeadExpression`
 
 ### Contract tests
 
 - `ConversationRepositoryPort`
 - `OperationalStateStorePort`
+- `HeadExpressionOutputPort`
 
 ### Integration tests
 
@@ -78,6 +81,8 @@ apps/atlas-core/src/atlas_core/contexts/interaction/
   - `StoreConversationTurn` + in-test in-memory repository
 - operational-state slice:
   - `TransitionOperationalState` + in-test in-memory state store
+- head-expression output slice:
+  - `PublishHeadExpression` + in-test output port
 
 ## Current slice status
 
@@ -88,6 +93,7 @@ Implemented slices:
 - application persists via `ConversationRepositoryPort.save_turn(...)`
 - application reads/persists operational state through `OperationalStateStorePort`
 - domain validates state transitions through `OperationalStateMachine`
+- application maps operational state to head expression and emits through `HeadExpressionOutputPort`
 
 Next planned slice:
 

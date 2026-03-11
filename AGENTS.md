@@ -195,6 +195,19 @@ Rules:
 - keep tests small and explicit
 - keep domain tests independent from infrastructure
 
+## Mandatory iteration loop
+
+For each slice, assistants must iterate until quality is complete:
+
+1. write failing tests first from specs and accepted behavior
+2. refine tests until they clearly cover main use cases and failure paths
+3. implement minimum production code
+4. run slice tests and full test suite
+5. review code and tests for correctness and architectural alignment
+6. if gaps are found, fix and repeat from step 4
+
+Do not consider the slice finished until tests and code are both reviewed, corrected, and green.
+
 ---
 
 # Test levels
