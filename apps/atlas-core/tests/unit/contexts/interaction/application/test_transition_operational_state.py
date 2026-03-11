@@ -29,6 +29,17 @@ class SpyOperationalStateStore(OperationalStateStorePort):
         return self.state
 
 
+class CorruptedOperationalStateStore(OperationalStateStorePort):
+    def __init__(self) -> None:
+        self.set_state_calls = 0
+
+    def set_state(self, state: RobotOperationalState) -> None:
+        self.set_state_calls += 1
+
+    def get_state(self) -> RobotOperationalState:
+        return "CORRUPTED"  # type: ignore[return-value]
+
+
 def test_transition_operational_state_creates_and_returns_next_state() -> None:
     # Arrange
     state_store = SpyOperationalStateStore(initial_state=RobotOperationalState.BOOTING)
@@ -176,6 +187,19 @@ def test_transition_operational_state_propagates_invalid_transition_error(
     # Assert
     assert state_store.set_state_calls == 0
     assert state_store.state is current_state
+
+
+def test_transition_operational_state_rejects_corrupted_persisted_state() -> None:
+    # Arrange
+    state_store = CorruptedOperationalStateStore()
+    use_case = TransitionOperationalState(state_store=state_store)
+
+    # Act / Assert
+    with pytest.raises(ValueError):
+        use_case.execute(next_state=RobotOperationalState.IDLE)
+
+    # Assert
+    assert state_store.set_state_calls == 0
 
 
 def test_transition_operational_state_uses_persisted_state_across_multiple_executions() -> None:
