@@ -19,6 +19,20 @@ def test_state_machine_cannot_be_created_directly_with_non_booting_state() -> No
         OperationalStateMachine(RobotOperationalState.IDLE)
 
 
+def test_state_machine_can_be_rehydrated_from_existing_state() -> None:
+    machine = OperationalStateMachine.rehydrate(RobotOperationalState.THINKING)
+
+    assert machine.current_state is RobotOperationalState.THINKING
+
+
+def test_rehydrated_state_machine_keeps_transition_rules() -> None:
+    machine = OperationalStateMachine.rehydrate(RobotOperationalState.THINKING)
+
+    machine.transition_to(RobotOperationalState.TALKING)
+
+    assert machine.current_state is RobotOperationalState.TALKING
+
+
 def test_can_transition_from_booting_to_idle() -> None:
     machine = OperationalStateMachine.initial()
 

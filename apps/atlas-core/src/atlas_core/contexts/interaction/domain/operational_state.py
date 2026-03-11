@@ -26,6 +26,12 @@ class OperationalStateMachine:
     def initial(cls) -> "OperationalStateMachine":
         return cls(current_state=RobotOperationalState.BOOTING)
 
+    @classmethod
+    def rehydrate(cls, current_state: RobotOperationalState) -> "OperationalStateMachine":
+        machine = cls(current_state=RobotOperationalState.BOOTING)
+        machine._current_state = current_state
+        return machine
+
     @property
     def current_state(self) -> RobotOperationalState:
         return self._current_state
