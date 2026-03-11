@@ -4,7 +4,7 @@ Atlas has completed repository and architecture foundation setup and is in activ
 
 The interaction domain currently includes:
 
-- operational state model
+- operational state model (including `THINKING -> TALKING`, `TALKING -> IDLE`, and `ERROR -> IDLE` transitions)
 - head expression mapping
 - conversation turn model
 - interaction session model

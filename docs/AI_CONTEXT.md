@@ -28,7 +28,7 @@ Repository and architecture foundation are complete, and early interaction slice
 
 ### Domain
 
-- Operational state model (`RobotOperationalState`, `OperationalStateMachine`)
+- Operational state model (`RobotOperationalState`, `OperationalStateMachine`) with phase-1 flow and recovery transitions (`BOOTING -> IDLE -> LISTENING -> THINKING -> TALKING -> IDLE`, and `LISTENING/THINKING/TALKING -> ERROR -> IDLE`)
 - Head expression mapping (`HeadExpression.from_operational_state(...)`)
 - Conversation turn model (`ConversationTurn`)
 - Interaction session model (`InteractionSession`)
@@ -44,7 +44,7 @@ Repository and architecture foundation are complete, and early interaction slice
 
 ### Tests available
 
-- Unit tests for domain and first application use case
+- Unit tests for domain and first application use case, including operational-state happy path and error/recovery transitions
 - Contract tests for interaction ports
 - First integration test for conversation store slice (application -> domain -> port)
 

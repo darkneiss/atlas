@@ -45,7 +45,7 @@ apps/atlas-core/src/atlas_core/contexts/interaction/
 
 ### Domain
 
-- `operational_state.py`
+- `operational_state.py` (phase-1 conversational transitions + error/recovery path)
 - `expression.py`
 - `conversation_turn.py`
 - `interaction_session.py`
