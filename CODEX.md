@@ -188,6 +188,26 @@ Mandatory rules:
 - Bugs must first be reproduced with tests.
 - Domain tests must not depend on infrastructure.
 
+## Mandatory quality loop (always)
+
+For every change, assistants must iterate this loop until the slice is complete and review-ready:
+
+1. write or refine failing tests from the spec and acceptance criteria
+2. review test quality before production code and ensure core use cases and failure paths are covered
+3. improve tests if coverage is insufficient, then re-run to confirm they fail for the expected reason
+4. implement the minimum production code to satisfy the failing tests
+5. run focused tests for the changed slice
+6. run the full test suite
+7. review changed code for bugs, regressions, boundary violations, and typing clarity
+8. if any issue remains, fix it and repeat from step 5
+
+Do not propose commit until:
+
+- failing tests were used as the driver for implementation
+- tests cover required use cases and relevant error paths for the slice
+- focused and full test runs are green
+- no unresolved medium/high review findings remain
+
 Test levels:
 
 - unit tests
