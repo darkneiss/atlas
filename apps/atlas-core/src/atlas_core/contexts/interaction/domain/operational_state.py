@@ -28,7 +28,8 @@ class OperationalStateMachine:
 
     @classmethod
     def rehydrate(cls, current_state: RobotOperationalState) -> "OperationalStateMachine":
-        machine = cls(current_state=RobotOperationalState.BOOTING)
+        # Bypass __init__ to rehydrate from a persisted state snapshot.
+        machine = object.__new__(cls)
         machine._current_state = current_state
         return machine
 
