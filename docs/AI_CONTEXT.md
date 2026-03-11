@@ -37,11 +37,13 @@ Repository and architecture foundation are complete, and early interaction slice
 
 - `StoreConversationTurn` use case
 - `TransitionOperationalState` use case
+- `PublishHeadExpression` use case
 
 ### Ports (contracts)
 
 - `ConversationRepositoryPort` (`save_turn(...)`)
 - `OperationalStateStorePort` (`set_state(...)`, `get_state()`)
+- `HeadExpressionOutputPort` (`show_expression(...)`)
 
 ### Tests available
 
@@ -50,6 +52,7 @@ Repository and architecture foundation are complete, and early interaction slice
 - Integration tests for:
   - conversation store slice (application -> domain -> port)
   - operational-state slice (application -> domain -> port)
+  - head-expression output slice (application -> domain -> port)
 
 ## Current focus
 
