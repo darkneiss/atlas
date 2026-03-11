@@ -53,6 +53,7 @@ apps/atlas-core/src/atlas_core/contexts/interaction/
 ### Application
 
 - `store_conversation_turn.py` (`StoreConversationTurn`)
+- `transition_operational_state.py` (`TransitionOperationalState`)
 
 ### Ports (contracts)
 
@@ -64,7 +65,7 @@ apps/atlas-core/src/atlas_core/contexts/interaction/
 ### Unit tests
 
 - domain: operational state, expression mapping, conversation turn, interaction session
-- application: `StoreConversationTurn`
+- application: `StoreConversationTurn`, `TransitionOperationalState`
 
 ### Contract tests
 
@@ -73,17 +74,21 @@ apps/atlas-core/src/atlas_core/contexts/interaction/
 
 ### Integration tests
 
-- first interaction slice:
+- conversation persistence slice:
   - `StoreConversationTurn` + in-test in-memory repository
+- operational-state slice:
+  - `TransitionOperationalState` + in-test in-memory state store
 
 ## Current slice status
 
-Implemented slice:
+Implemented slices:
 
 - application receives input fields
 - domain validates and creates `ConversationTurn`
 - application persists via `ConversationRepositoryPort.save_turn(...)`
+- application reads/persists operational state through `OperationalStateStorePort`
+- domain validates state transitions through `OperationalStateMachine`
 
 Next planned slice:
 
-- operational-state application use case via `OperationalStateStorePort`
+- memory persistence boundary (`MemoryRepositoryPort`) and contract tests

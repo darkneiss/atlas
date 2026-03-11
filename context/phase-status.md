@@ -12,6 +12,7 @@ The interaction domain currently includes:
 Application and boundary progress:
 
 - `StoreConversationTurn` application use case
+- `TransitionOperationalState` application use case
 - `ConversationRepositoryPort` contract
 - `OperationalStateStorePort` contract
 
@@ -19,10 +20,12 @@ Testing progress:
 
 - unit tests are green for implemented domain/application elements
 - contract tests are green for implemented interaction ports
-- first integration slice is green (`StoreConversationTurn` + in-memory repository in test scope)
+- integration slices are green:
+  - `StoreConversationTurn` + in-memory repository in test scope
+  - `TransitionOperationalState` + in-memory state store in test scope
 
 Next focus areas:
 
-- operational state application slice using `OperationalStateStorePort`
 - memory persistence boundary contract
+- first interaction orchestration use case combining existing slices
 - incremental expansion of conversational flow toward AC-005 to AC-008

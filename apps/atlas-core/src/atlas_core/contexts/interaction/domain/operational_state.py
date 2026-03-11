@@ -26,11 +26,31 @@ class OperationalStateMachine:
     def initial(cls) -> "OperationalStateMachine":
         return cls(current_state=RobotOperationalState.BOOTING)
 
+    @classmethod
+    def rehydrate(
+        cls,
+        current_state: RobotOperationalState | str,
+    ) -> "OperationalStateMachine":
+        try:
+            normalized_state = RobotOperationalState(current_state)
+        except (TypeError, ValueError) as error:
+            raise ValueError(
+                f"Invalid operational state for rehydration: {current_state!r}"
+            ) from error
+
+        # Bypass __init__ to rehydrate from a persisted state snapshot.
+        machine = object.__new__(cls)
+        machine._current_state = normalized_state
+        return machine
+
     @property
     def current_state(self) -> RobotOperationalState:
         return self._current_state
 
     def transition_to(self, next_state: RobotOperationalState) -> None:
+        if not isinstance(next_state, RobotOperationalState):
+            raise ValueError(f"Invalid operational state for transition: {next_state!r}")
+
         allowed_transitions: dict[RobotOperationalState, set[RobotOperationalState]] = {
             RobotOperationalState.BOOTING: {RobotOperationalState.IDLE},
             RobotOperationalState.IDLE: {RobotOperationalState.LISTENING},

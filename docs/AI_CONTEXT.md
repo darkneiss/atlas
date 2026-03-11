@@ -36,6 +36,7 @@ Repository and architecture foundation are complete, and early interaction slice
 ### Application
 
 - `StoreConversationTurn` use case
+- `TransitionOperationalState` use case
 
 ### Ports (contracts)
 
@@ -44,15 +45,17 @@ Repository and architecture foundation are complete, and early interaction slice
 
 ### Tests available
 
-- Unit tests for domain and first application use case, including operational-state happy path and error/recovery transitions
+- Unit tests for domain and implemented application use cases, including operational-state happy path and error/recovery transitions
 - Contract tests for interaction ports
-- First integration test for conversation store slice (application -> domain -> port)
+- Integration tests for:
+  - conversation store slice (application -> domain -> port)
+  - operational-state slice (application -> domain -> port)
 
 ## Current focus
 
 - Keep expanding phase-1 interaction flow in small vertical slices
 - Preserve strict domain/application/ports boundaries
-- Add contracts and integration tests before introducing concrete adapters
+- Define memory persistence boundary and tests before introducing concrete adapters
 
 ## Out of scope in current phase
 

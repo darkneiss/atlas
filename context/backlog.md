@@ -14,14 +14,16 @@
 - `ConversationRepositoryPort` contract and tests implemented.
 - `OperationalStateStorePort` contract and tests implemented.
 - First integration slice implemented for storing conversation turns.
+- `TransitionOperationalState` application use case implemented.
+- Integration slice implemented for operational-state transitions.
 - Unit, contract, and current integration tests are green for implemented slices.
 
 ### In Progress / Next
 
-- Implement first operational-state application use case through `OperationalStateStorePort`.
-- Add unit tests for that operational-state use case.
-- Add integration test for the operational-state slice with in-test in-memory store.
 - Define `MemoryRepositoryPort` and its contract tests.
+- Create first interaction orchestration use case using existing conversation/state boundaries.
+- Add unit tests for orchestration behavior and error paths.
+- Add integration test for orchestration flow with in-test adapters.
 
 ### Later in Phase 1
 

@@ -19,6 +19,31 @@ def test_state_machine_cannot_be_created_directly_with_non_booting_state() -> No
         OperationalStateMachine(RobotOperationalState.IDLE)
 
 
+def test_state_machine_can_be_rehydrated_from_existing_state() -> None:
+    machine = OperationalStateMachine.rehydrate(RobotOperationalState.THINKING)
+
+    assert machine.current_state is RobotOperationalState.THINKING
+
+
+def test_state_machine_can_be_rehydrated_from_valid_serialized_state() -> None:
+    machine = OperationalStateMachine.rehydrate("THINKING")
+
+    assert machine.current_state is RobotOperationalState.THINKING
+
+
+def test_rehydrate_rejects_invalid_serialized_state() -> None:
+    with pytest.raises(ValueError):
+        OperationalStateMachine.rehydrate("UNKNOWN")
+
+
+def test_rehydrated_state_machine_keeps_transition_rules() -> None:
+    machine = OperationalStateMachine.rehydrate(RobotOperationalState.THINKING)
+
+    machine.transition_to(RobotOperationalState.TALKING)
+
+    assert machine.current_state is RobotOperationalState.TALKING
+
+
 def test_can_transition_from_booting_to_idle() -> None:
     machine = OperationalStateMachine.initial()
 
@@ -35,6 +60,15 @@ def test_cannot_transition_from_idle_to_talking_without_reply_ready() -> None:
         machine.transition_to(RobotOperationalState.TALKING)
 
     assert machine.current_state is RobotOperationalState.IDLE
+
+
+def test_transition_to_rejects_non_operational_state_value() -> None:
+    machine = OperationalStateMachine.initial()
+
+    with pytest.raises(ValueError):
+        machine.transition_to("IDLE")  # type: ignore[arg-type]
+
+    assert machine.current_state is RobotOperationalState.BOOTING
 
 
 def test_can_transition_from_listening_to_thinking() -> None:

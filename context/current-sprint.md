@@ -6,12 +6,12 @@ Deliver the next small phase-1 interaction slice from contract to integration, a
 
 ## Priorities (in order)
 
-1. Create the first operational-state application use case using `OperationalStateStorePort`.
-2. Add unit tests for that use case.
-3. Add a minimal integration test for that slice using an in-test in-memory store.
-4. Define `MemoryRepositoryPort` as the next interaction boundary contract.
-5. Add contract tests for `MemoryRepositoryPort`.
-6. Extend interaction flow coverage toward AC-005 to AC-008 in small increments.
+1. Define `MemoryRepositoryPort` as the next interaction boundary contract.
+2. Add contract tests for `MemoryRepositoryPort`.
+3. Create the first interaction orchestration use case combining current conversation and operational-state slices.
+4. Add unit tests for orchestration behavior and failure paths.
+5. Add an integration test for the orchestration slice using in-test adapters.
+6. Extend flow coverage toward AC-005 to AC-008 in small increments.
 
 ## Out of Scope for This Slice
 
