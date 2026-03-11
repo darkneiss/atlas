@@ -32,6 +32,7 @@ Repository and architecture foundation are complete, and early interaction slice
 - Head expression mapping (`HeadExpression.from_operational_state(...)`)
 - Conversation turn model (`ConversationTurn`)
 - Interaction session model (`InteractionSession`)
+- Memory fact model (`MemoryFact`) with `source` and `confidence` validation
 
 ### Application
 
@@ -44,6 +45,7 @@ Repository and architecture foundation are complete, and early interaction slice
 - `ConversationRepositoryPort` (`save_turn(...)`)
 - `OperationalStateStorePort` (`set_state(...)`, `get_state()`)
 - `HeadExpressionOutputPort` (`show_expression(...)`)
+- `MemoryRepositoryPort` (`save_fact(...)`)
 
 ### Tests available
 

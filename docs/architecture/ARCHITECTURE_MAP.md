@@ -49,6 +49,7 @@ apps/atlas-core/src/atlas_core/contexts/interaction/
 - `expression.py`
 - `conversation_turn.py`
 - `interaction_session.py`
+- `memory_fact.py`
 
 ### Application
 
@@ -61,12 +62,13 @@ apps/atlas-core/src/atlas_core/contexts/interaction/
 - `conversation_repository.py` (`ConversationRepositoryPort`)
 - `operational_state_store.py` (`OperationalStateStorePort`)
 - `head_expression_output.py` (`HeadExpressionOutputPort`)
+- `memory_repository.py` (`MemoryRepositoryPort`)
 
 ## Test map (implemented)
 
 ### Unit tests
 
-- domain: operational state, expression mapping, conversation turn, interaction session
+- domain: operational state, expression mapping, conversation turn, interaction session, memory fact
 - application: `StoreConversationTurn`, `TransitionOperationalState`, `PublishHeadExpression`
 
 ### Contract tests
@@ -74,6 +76,7 @@ apps/atlas-core/src/atlas_core/contexts/interaction/
 - `ConversationRepositoryPort`
 - `OperationalStateStorePort`
 - `HeadExpressionOutputPort`
+- `MemoryRepositoryPort`
 
 ### Integration tests
 
@@ -97,4 +100,4 @@ Implemented slices:
 
 Next planned slice:
 
-- memory persistence boundary (`MemoryRepositoryPort`) and contract tests
+- first interaction orchestration use case combining conversation, state transition, and head-expression publication

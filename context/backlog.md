@@ -19,11 +19,12 @@
 - `HeadExpressionOutputPort` contract and tests implemented.
 - `PublishHeadExpression` application use case implemented.
 - Integration slice implemented for head-expression output.
+- `MemoryFact` domain model implemented.
+- `MemoryRepositoryPort` contract and tests implemented.
 - Unit, contract, and current integration tests are green for implemented slices.
 
 ### In Progress / Next
 
-- Define `MemoryRepositoryPort` and its contract tests.
 - Create first interaction orchestration use case using existing conversation/state boundaries.
 - Add unit tests for orchestration behavior and error paths.
 - Add integration test for orchestration flow with in-test adapters.

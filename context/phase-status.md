@@ -17,6 +17,7 @@ Application and boundary progress:
 - `ConversationRepositoryPort` contract
 - `OperationalStateStorePort` contract
 - `HeadExpressionOutputPort` contract
+- `MemoryRepositoryPort` contract
 
 Testing progress:
 
@@ -29,6 +30,5 @@ Testing progress:
 
 Next focus areas:
 
-- memory persistence boundary contract
 - first interaction orchestration use case combining existing slices
 - incremental expansion of conversational flow toward AC-005 to AC-008
