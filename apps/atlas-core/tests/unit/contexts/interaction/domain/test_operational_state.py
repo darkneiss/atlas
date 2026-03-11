@@ -47,6 +47,83 @@ def test_can_transition_from_listening_to_thinking() -> None:
     assert machine.current_state is RobotOperationalState.THINKING
 
 
+def test_can_transition_from_thinking_to_talking() -> None:
+    machine = OperationalStateMachine.initial()
+    machine.transition_to(RobotOperationalState.IDLE)
+    machine.transition_to(RobotOperationalState.LISTENING)
+    machine.transition_to(RobotOperationalState.THINKING)
+
+    machine.transition_to(RobotOperationalState.TALKING)
+
+    assert machine.current_state is RobotOperationalState.TALKING
+
+
+def test_can_transition_from_talking_to_idle() -> None:
+    machine = OperationalStateMachine.initial()
+    machine.transition_to(RobotOperationalState.IDLE)
+    machine.transition_to(RobotOperationalState.LISTENING)
+    machine.transition_to(RobotOperationalState.THINKING)
+    machine.transition_to(RobotOperationalState.TALKING)
+
+    machine.transition_to(RobotOperationalState.IDLE)
+
+    assert machine.current_state is RobotOperationalState.IDLE
+
+
+@pytest.mark.parametrize(
+    "transition_sequence",
+    [
+        pytest.param(
+            (
+                RobotOperationalState.IDLE,
+                RobotOperationalState.LISTENING,
+                RobotOperationalState.ERROR,
+            ),
+            id="from_listening",
+        ),
+        pytest.param(
+            (
+                RobotOperationalState.IDLE,
+                RobotOperationalState.LISTENING,
+                RobotOperationalState.THINKING,
+                RobotOperationalState.ERROR,
+            ),
+            id="from_thinking",
+        ),
+        pytest.param(
+            (
+                RobotOperationalState.IDLE,
+                RobotOperationalState.LISTENING,
+                RobotOperationalState.THINKING,
+                RobotOperationalState.TALKING,
+                RobotOperationalState.ERROR,
+            ),
+            id="from_talking",
+        ),
+    ],
+)
+def test_can_transition_to_error_from_any_active_state(
+    transition_sequence: tuple[RobotOperationalState, ...],
+) -> None:
+    machine = OperationalStateMachine.initial()
+
+    for state in transition_sequence:
+        machine.transition_to(state)
+
+    assert machine.current_state is RobotOperationalState.ERROR
+
+
+def test_can_recover_from_error_to_idle() -> None:
+    machine = OperationalStateMachine.initial()
+    machine.transition_to(RobotOperationalState.IDLE)
+    machine.transition_to(RobotOperationalState.LISTENING)
+    machine.transition_to(RobotOperationalState.ERROR)
+
+    machine.transition_to(RobotOperationalState.IDLE)
+
+    assert machine.current_state is RobotOperationalState.IDLE
+
+
 @pytest.mark.parametrize(
     ("state", "expected_expression"),
     [

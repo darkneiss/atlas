@@ -20,22 +20,38 @@ class OperationalStateMachine:
         if current_state is not RobotOperationalState.BOOTING:
             raise ValueError("OperationalStateMachine must be created in BOOTING state")
 
-        self.current_state = current_state
+        self._current_state = current_state
 
     @classmethod
     def initial(cls) -> "OperationalStateMachine":
         return cls(current_state=RobotOperationalState.BOOTING)
 
+    @property
+    def current_state(self) -> RobotOperationalState:
+        return self._current_state
+
     def transition_to(self, next_state: RobotOperationalState) -> None:
         allowed_transitions: dict[RobotOperationalState, set[RobotOperationalState]] = {
             RobotOperationalState.BOOTING: {RobotOperationalState.IDLE},
             RobotOperationalState.IDLE: {RobotOperationalState.LISTENING},
-            RobotOperationalState.LISTENING: {RobotOperationalState.THINKING},
+            RobotOperationalState.LISTENING: {
+                RobotOperationalState.THINKING,
+                RobotOperationalState.ERROR,
+            },
+            RobotOperationalState.THINKING: {
+                RobotOperationalState.TALKING,
+                RobotOperationalState.ERROR,
+            },
+            RobotOperationalState.TALKING: {
+                RobotOperationalState.IDLE,
+                RobotOperationalState.ERROR,
+            },
+            RobotOperationalState.ERROR: {RobotOperationalState.IDLE},
         }
 
-        if next_state not in allowed_transitions.get(self.current_state, set()):
+        if next_state not in allowed_transitions.get(self._current_state, set()):
             raise InvalidStateTransitionError(
-                f"Invalid transition: {self.current_state.value} -> {next_state.value}"
+                f"Invalid transition: {self._current_state.value} -> {next_state.value}"
             )
 
-        self.current_state = next_state
+        self._current_state = next_state
